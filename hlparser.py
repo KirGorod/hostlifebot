@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from constants import *
+import time
 
 
 def close_tickets():
@@ -10,34 +11,36 @@ def close_tickets():
             'pass': PASSWORD
         }
         try:
-            print("Try post")
             r = s.post(URL, data=login_data)
-            print("Try get")
             r = s.get('https://order.hostlife.net/je4KfGJ0.php?do=tickets')
-            print("Logged in")
         except:
-            print(BaseException)
+            pass
 
-        soup = BeautifulSoup(r.content, 'html.parser')
-        items = (soup.find_all('a'))
+        #clear tickets x times
+        for x in range(0, 4):
 
-        links = []
-        for item in items:
-            links.append(item.get('href'))
+            #main logic
+            soup = BeautifulSoup(r.content, 'html.parser')
+            items = (soup.find_all('a'))
+            pattern = "?do=tickets&sub=view&id"
 
-        pattern = "?do=tickets&sub=view&id"
-        for i, link in enumerate(links):
-            try:
-                if pattern in link:
-                    print(f"Oppening link {i}...")
-                    s.get(HOST + link)
-            except:
-                pass
+            #get links collection
+            links = []
+            for item in items:
+                links.append(item.get('href'))
+
+            #close tickets that are in collection
+            for i, link in enumerate(links):
+                try:
+                    if pattern in link:
+                        print(f"Oppening link {i}...")
+                        s.get(HOST + link)
+                except:
+                    pass
+            time.sleep(3)
+            print(f"Iteration #{x}")
 
 
 
 if __name__ == "__main__":
     close_tickets()
-
-
-
