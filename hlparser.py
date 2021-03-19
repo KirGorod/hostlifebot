@@ -37,7 +37,7 @@ def close_tickets():
                         s.get(HOST + link)
                 except:
                     pass
-            time.sleep(3)
+            time.sleep(1)
             print(f"Iteration #{x}")
 
 
