@@ -11,12 +11,13 @@ def send_welcome(message):
 
 @bot.message_handler(commands=['clear'])
 def clear(message):
-    bot.send_message(message.chat.id, "Processing...")
     try:
+        bot.send_message(message.chat.id, "Processing...")
         hlparser.close_tickets()
     except:
+        bot.send_message(message.chat.id, "Error, something went wrong.")
         print(BaseException)
-    print("done")
+    print("Done")
     bot.send_message(message.chat.id, "Cleared!")
 
 
